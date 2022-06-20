@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .continer{
+      width: 590px;
+      height: 470px;
+      overflow: hidden;
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      position: relative;
+    }
+    
+    .continer>.list{
+      height: 100%;
+      display: flex;
+      flex: none;
+      position: absolute;
+      background-color: pink;
+    }
+
+
+    .continer >.list .Item{
+      width: 590px;
+      text-align: center;
+      line-height: 470px;
+      height: 470px;
+      font-size: 65px;
+    }
+   
+
+    .Pagination{
+      width: 100%;
+      height: 40px;
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .dot{
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    .Pagination>div.active{
+      background-color: red;
+    }
+
+    .continer .diect{
+    width: 50px;
+    height: 100px;
+    background-color: red;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 70px;
+    text-align: center;
+    }
+
+    .continer .next{
+      right: 0;
+
+    }
+
+  </style>
+</head>
+<body>
+  <div class="continer">
+     <div class="list">
+     </div>
+     <div class="Pagination">
+     </div>
+     <div class="next diect">
+      &#8250;
+     </div>
+     <div class="pre diect">
+      &#8249;
+     </div>
+  </div>
+<script>
+
+   let imgList=["1",
+             "2",
+             "3",
+             "4",
+             "5"];
+
+    $=(selector)=> document.querySelector(selector);
+
+    $X=(selector)=> document.querySelectorAll(selector);
+
+    $(".list").style.width=$(".continer").offsetWidth*imgList.length+"px";
+
+    
+    $(".Pagination").innerHTML=imgList.map((item)=>{
+      return ` <div class="dot ${item-1} ${item==1 ? 'active' : ''}">
+     </div>`
+    }).join('');
+
+    $(".list").innerHTML=imgList.map((item)=>{
+      return ` <div class="Item">
+        ${item}
+   </div>`
+    }).join('');
+
+   (()=>{
+
+    let dots=Array.from(($X(".Pagination > .dot")));
+
+    for (let i = 0; i < imgList.length; i++) {
+
+      $(".continer").onclick=function (event) {
+
+        if(event.target.classList[0]!="dot") return
+
+          dots.forEach((dot)=>{
+            dot.classList.remove("active");
+          })
+
+        let i;
+       
+        i=event.target.classList[1];
+       
+
+        $(".list").style.left= -590*i+"px";
+
+        dots[i].classList.add("active");
+      }
+
+    }
+   })()
+
+
+
+   
+
+</script>
+</body>
+</html>
