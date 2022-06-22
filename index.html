@@ -102,18 +102,26 @@
       "2",
       "3",
       "4",
-      "5"
+      "5",
     ];
 
     let i = 0; //标识当前移动到哪了
+
     let dots;
+
+    let moveid;
+
+    let flag = false
+
+    let meed = 10;
+
     $X = (selector) => document.querySelectorAll(selector);
 
     $ = (selector) => document.querySelector(selector);
 
     //圆点伪数组
     setTimeout(() => {
-       dots = Array.from(($X(".Pagination > .dot")));
+      dots = Array.from(($X(".Pagination > .dot")));
     }, 0);
 
     $(".list").style.width = $(".continer").offsetWidth * imgList.length + "px";
@@ -136,24 +144,22 @@
       if (event.target.classList[0] != "dot") return
 
       i = event.target.classList[1];
-    
+
       $(".list").style.left = -590 * i + "px";
-      
-      updateDot(dots,i);
+      //moveList($(".list"));
+      updateDot(dots, i);
     }
 
 
     (() => {
-      //for (let i = 0; i < imgList.length; i++) {
-        $(".continer").addEventListener("click", (event) => clickDotList(event))
-      //}
+      $(".continer").addEventListener("click", (event) => clickDotList(event))
     })();
 
     (() => {
       //控制轮播图移动范围
       $(".continer").onclick = (event) => {
         let flag = event.target.classList[0]; //标识当前点击方向
-        console.log(i);
+        //console.log(i);
 
         if (event.target.classList[1] != "diect") return;
 
@@ -168,21 +174,52 @@
             i = imgList.length - 1;
           }
         }
-        
-        $(".list").style.left = -590 * i + "px";
 
-        updateDot(dots,i);
+        let end = -590 * i
+
+        moveList($(".list"), end);
+
+        updateDot(dots, i);
       }
     })();
 
 
     function moveList(object, target) {
 
+      if (flag) return
 
+      flag = true
 
+      let currentLeft = object.offsetLeft;
 
+      let dist = $(".continer").offsetWidth / meed;
+      //目标重点如何计算
+      /*   如果移动方向为`右边` 那么终点为整数 大于终点  结果
 
+如果移动方向为`左边` 那么终点为负数 小于终点 */
+      if (currentLeft > target) {
+        dist = -dist;
+      }
 
+      moveid = setInterval(() => {
+
+        currentLeft = object.offsetLeft;
+        
+        currentLeft += dist;
+
+        //dist可能为负数，可能为正数 逐渐增加 逐渐减少
+        if ((dist < 0 && currentLeft <= target) || (dist > 0 && currentLeft >= target)) {
+
+          clearInterval(moveid);
+
+          $(".list").style.left = target + "px";
+          flag = false;
+          return;
+        }
+
+        $(".list").style.left = currentLeft + "px";
+
+      }, 50);
     }
 
 
@@ -192,7 +229,7 @@
       dots.forEach((dot) => {
         dot.classList.remove("active");
       })
-     
+
       dots[target].classList.add("active");
     }
   </script>

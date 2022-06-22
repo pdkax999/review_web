@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    body {
+      position: relative;
+      height: 500px;
+      /* transition: all 2s; */
+    }
+
+    body .line {
+      width: 3px;
+      height: 200px;
+      background-color: #000;
+      position: absolute;
+      left: 700px;
+      top: 0;
+
+    }
+
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: red;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+
+    /*  body:hover{
+      left: 700px;
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="box">
+  </div>
+  <div class="line"></div>
+  <script>
+    $ = (selector) => document.querySelector(selector);
+
+    let meed = 30;
+
+    moveList($(".box"));
+
+    function moveList(object, target) {
+
+      let currentLeft = object.offsetLeft;
+      //目标重点如何计算
+      let endLeft = 700;
+
+      let dist = 700 / meed;
+
+      moveid = setInterval(() => {
+
+        currentLeft = object.offsetLeft;
+
+        currentLeft += dist;
+
+        if (currentLeft >= endLeft) {
+
+          clearInterval(moveid);
+
+          $(".box").style.left = endLeft + "px";
+
+          return;
+        }
+        $(".box").style.left = currentLeft + "px";
+
+      }, 50);
+    }
+  </script>
+</body>
+
+</html>
