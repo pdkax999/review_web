@@ -135,18 +135,11 @@
 
       if (event.target.classList[0] != "dot") return
 
-      dots.forEach((dot) => {
-        dot.classList.remove("active");
-      })
-     
       i = event.target.classList[1];
-      console.log(event.target.classList);
-
+    
       $(".list").style.left = -590 * i + "px";
-     
       
-      dots[i].classList.add("active");
-
+      updateDot(dots,i);
     }
 
 
@@ -177,11 +170,11 @@
         }
         
         $(".list").style.left = -590 * i + "px";
+
+        updateDot(dots,i);
       }
-    })()
+    })();
 
-
-    ;
 
     function moveList(object, target) {
 
@@ -192,12 +185,15 @@
 
     }
 
+
+    //更新圆点
     function updateDot(dots, target) {
 
-
-
-
-
+      dots.forEach((dot) => {
+        dot.classList.remove("active");
+      })
+     
+      dots[target].classList.add("active");
     }
   </script>
 </body>
