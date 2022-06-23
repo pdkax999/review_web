@@ -100,7 +100,7 @@
   </div>
   <script>
 
-    let imgList = ["5","1",
+    let imgList = ["5", "1",
       "2",
       "3",
       "4",
@@ -125,16 +125,16 @@
     //圆点伪数组
     setTimeout(() => {
       dots = Array.from(($X(".Pagination > .dot")));
-      //console.log(dots);
     }, 0);
 
     $(".list").style.width = $(".continer").offsetWidth * imgList.length + "px";
 
     //动态生成圆点
-    $(".Pagination").innerHTML = imgList.map((item,index) => {
-      if(!(index<imgList.length-2))  return;
+    $(".Pagination").innerHTML = imgList.map((item, index) => {
+      if (!(index < imgList.length - 2)) return;
       //active
-      return ` <div class="dot ${item-1} ${item==1 ? '' : ''}">
+      return ` <div class="dot ${index}
+       ${index==0 ? 'active' : ''}">
      </div>`
     }).join('');
 
@@ -150,15 +150,14 @@
       if (event.target.classList[0] != "dot") return
 
       i = event.target.classList[1];
-      console.log("执行i=",i);
-      
-      $(".list").style.left = -590 * i + "px";
-      //moveList($(".list"));
-      //updateDot(dots, i);
+
+      //$(".list").style.left = -590 * i + "px";
+     moveList($(".list"), (Number(i)+1)*-590);
+    updateDot(dots, (Number(i)+1));
     }
 
     (() => {
-   //   $(".continer").addEventListener("click", (event) => clickDotList(event))
+         $(".continer").addEventListener("click", (event) => clickDotList(event))
     })();
 
     (() => {
@@ -166,22 +165,22 @@
       $(".continer").onclick = (event) => {
 
         let flag = event.target.classList[0]; //标识当前点击方向
-        //console.log(i);
 
         if (event.target.classList[1] != "diect") return;
 
         if (flag == "next") {
           i++;
- 
+
         } else {
           i--;
         }
-        
+
         let end = -590 * i
-        console.log(end);
         
         moveList($(".list"), end);
+        
         updateDot(dots, i);
+
       }
     })();
 
@@ -197,8 +196,6 @@
       //目标重点如何计算
       /*   如果移动方向为`右边` 那么终点为整数 大于终点  逐渐增加
 如果移动方向为`左边` 那么终点为负数 小于终点   逐渐减少*/
-      console.log(currentLeft , target);
-      
       if (currentLeft > target) {
 
         dist = -dist;
@@ -207,33 +204,32 @@
       moveid = setInterval(() => {
 
         currentLeft = object.offsetLeft;
-        
+
         currentLeft += dist;
-          
+
         //dist可能为负数，可能为正数 逐渐增加 逐渐减少
         if ((dist < 0 && currentLeft <= target) || (dist > 0 && currentLeft >= target)) {
 
           clearInterval(moveid);
-          console.log(target);
-          
+
           $(".list").style.left = target + "px";
 
-         if(target==(imgList.length-1)*-590){
+          if (target == (imgList.length - 1) * -590) {
 
-          $(".list").style.left = -590 + "px";
-          
-          i=1;
-         }
+            $(".list").style.left = -590 + "px";
 
-         if(target==0){
-          
-          $(".list").style.left = (imgList.length-2)*-590 + "px";
+            i = 1;
+          }
 
-          i=5;
-         }
+          if (target == 0) {
+
+            $(".list").style.left = (imgList.length - 2) * -590 + "px";
+
+            i = 5;
+          }
 
           flag = false;
-          
+
           return;
         }
 
@@ -246,12 +242,42 @@
     //更新圆点
     function updateDot(dots, target) {
 
+      if(target==imgList.length-1){
+
+        target=1;
+
+      }
+  
+       if(target==0){
+          
+        target=5;
+
+      } 
       dots.forEach((dot) => {
         dot.classList.remove("active");
       })
 
-      dots[target-1].classList.add("active");
+      dots[target - 1].classList.add("active");
     }
+
+    function autoList() {
+
+      setInterval(() => {
+
+        i++;
+
+        let end = -590 * i
+        
+        moveList($(".list"), end);
+
+        updateDot(dots, i);
+
+      }, 1000);
+
+    }
+    autoList()
+
+
   </script>
 </body>
 
