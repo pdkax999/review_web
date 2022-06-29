@@ -29,6 +29,7 @@
       flex: none;
       position: absolute;
       background-color: pink;
+      left: -590px;
     }
 
 
@@ -95,23 +96,32 @@
   </div>
 <script>
 
-   let imgList=["1",
+   let imgList=["5",
+             "1",
              "2",
              "3",
              "4",
-             "5"];
+             "5",
+             "1"
+            ];
+    let timeAll = 600;
+
+    let timeStep = 20;
 
     $=(selector)=> document.querySelector(selector);
 
-    $X=(selector)=> document.querySelectorAll(selector);
+    $A=(selector)=> document.querySelectorAll(selector);
+
 
     $(".list").style.width=$(".continer").offsetWidth*imgList.length+"px";
 
     
-    $(".Pagination").innerHTML=imgList.map((item)=>{
-      return ` <div class="dot ${item-1} ${item==1 ? 'active' : ''}">
+    $(".Pagination").innerHTML=imgList.map((item,index)=>{
+      if(!(index<5)) return;
+      return ` <div class="dot ${item-1} ${index==0 ? 'active' : ''}">
      </div>`
     }).join('');
+
 
     $(".list").innerHTML=imgList.map((item)=>{
       return ` <div class="Item">
@@ -119,36 +129,7 @@
    </div>`
     }).join('');
 
-   (()=>{
-
-    let dots=Array.from(($X(".Pagination > .dot")));
-
-    for (let i = 0; i < imgList.length; i++) {
-
-      $(".continer").onclick=function (event) {
-
-        if(event.target.classList[0]!="dot") return
-
-          dots.forEach((dot)=>{
-            dot.classList.remove("active");
-          })
-
-        let i;
-       
-        i=event.target.classList[1];
-       
-
-        $(".list").style.left= -590*i+"px";
-
-        dots[i].classList.add("active");
-      }
-
-    }
-   })()
-
-
-
-   
+    let dots=Array.from(($A(".Pagination > .dot")));
 
 </script>
 </body>
